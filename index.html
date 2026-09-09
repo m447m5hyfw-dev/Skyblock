@@ -1,160 +1,264 @@
+Kopiere den kompletten Code unten und ersetze damit in GitHub den gesamten Inhalt deiner Datei index.html.
+
+Wichtig:
+GitHub → Skyblock → index.html → Stift-Symbol → Strg + A → alles löschen → Code einfügen → unten Commit changes.
+
+xml
 <!doctype html>
 <html lang="de">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Hypixel SkyBlock Craft Flips</title>
+  <meta name="theme-color" content="#0b1220">
+  <title>SkyBlock Flip Scanner</title>
 
   <style>
+    :root {
+      --bg: #0b1220;
+      --panel: #121d30;
+      --line: #2a3c5c;
+      --text: #edf5ff;
+      --muted: #aabbd1;
+      --blue: #5bdcff;
+      --green: #75efab;
+      --red: #ff9c9c;
+      --gold: #ffd36b;
+    }
+
     * {
       box-sizing: border-box;
     }
 
     body {
       margin: 0;
-      background: #0e1624;
-      color: #eef6ff;
-      font-family: Arial, sans-serif;
+      min-height: 100vh;
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at 20% 0%, #18365c 0, #0b1220 42%),
+        var(--bg);
     }
 
     main {
-      max-width: 1150px;
+      max-width: 1220px;
       margin: auto;
-      padding: 28px 16px 48px;
+      padding: 30px 16px 52px;
     }
 
     h1 {
-      margin: 0 0 7px;
-      color: #60dcff;
+      margin: 0;
+      color: var(--blue);
+      font-size: clamp(28px, 4vw, 43px);
     }
 
-    p {
-      color: #b7c4d6;
+    h2 {
+      margin: 0 0 6px;
+      font-size: 22px;
+    }
+
+    .subtitle {
+      margin: 8px 0 22px;
+      color: var(--muted);
       line-height: 1.5;
     }
 
-    .panel,
-    .stat {
-      background: #17253a;
-      border: 1px solid #2b405c;
-      border-radius: 12px;
+    .panel {
       padding: 18px;
+      background: rgba(18, 29, 48, 0.94);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.18);
     }
 
-    .panel {
-      margin: 20px 0;
+    .tabs {
+      display: flex;
+      gap: 9px;
+      flex-wrap: wrap;
+      margin-bottom: 17px;
+    }
+
+    .tab {
+      padding: 12px 16px;
+      color: var(--muted);
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      background: #101a2b;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+    }
+
+    .tab.active {
+      color: #06111d;
+      background: var(--blue);
+      border-color: var(--blue);
+    }
+
+    .hidden {
+      display: none !important;
     }
 
     .controls {
       display: flex;
       gap: 10px;
       flex-wrap: wrap;
+      align-items: end;
+      margin: 14px 0;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 145px;
+    }
+
+    .field label {
+      color: var(--muted);
+      font-size: 12px;
     }
 
     input {
-      flex: 1;
-      min-width: 280px;
-      background: #0a111c;
-      border: 1px solid #39516e;
+      width: 100%;
+      padding: 11px;
+      color: var(--text);
+      font-size: 15px;
+      background: #0a1322;
+      border: 1px solid var(--line);
       border-radius: 8px;
-      padding: 12px;
-      color: #fff;
-      font-size: 16px;
     }
 
-    button {
-      background: #61dcff;
+    button.action {
+      padding: 12px 16px;
+      color: #05101c;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      background: var(--blue);
       border: 0;
       border-radius: 8px;
-      padding: 12px 18px;
-      font-size: 16px;
-      font-weight: 700;
-      color: #06111d;
-      cursor: pointer;
     }
 
-    button:disabled {
-      opacity: 0.7;
+    button.action:disabled {
       cursor: wait;
+      opacity: 0.65;
     }
 
     #status {
-      margin: 14px 0 0;
       min-height: 22px;
+      margin: 15px 0;
+      color: var(--muted);
     }
 
-    .error {
-      color: #ff9292;
+    #status.ok {
+      color: var(--green);
     }
 
-    .ok {
-      color: #85eea9;
+    #status.error {
+      color: var(--red);
     }
 
     .stats {
       display: flex;
-      gap: 14px;
+      gap: 12px;
       flex-wrap: wrap;
-      margin: 20px 0;
+      margin: 16px 0;
     }
 
     .stat {
-      min-width: 185px;
+      min-width: 170px;
+      padding: 12px 15px;
+      background: #0e1829;
+      border: 1px solid var(--line);
+      border-radius: 10px;
     }
 
-    .small {
-      color: #aebed1;
+    .stat small {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--muted);
+    }
+
+    .notice {
+      padding: 11px 13px;
+      margin: 14px 0;
+      color: #dbe8fa;
       font-size: 13px;
+      line-height: 1.45;
+      background: #182a43;
+      border-left: 4px solid var(--gold);
+      border-radius: 7px;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: 11px;
     }
 
     table {
       width: 100%;
+      min-width: 740px;
+      background: #111c2e;
       border-collapse: collapse;
-      background: #17253a;
-      border-radius: 12px;
-      overflow: hidden;
     }
 
     th,
     td {
       padding: 13px 12px;
       text-align: left;
-      border-bottom: 1px solid #2b405c;
+      vertical-align: top;
+      border-bottom: 1px solid #263957;
     }
 
     th {
+      color: #8edfff;
       font-size: 12px;
-      letter-spacing: 0.4px;
+      letter-spacing: 0.35px;
       text-transform: uppercase;
-      color: #8bdfff;
+      background: #15233a;
     }
 
     tr:last-child td {
-      border: none;
+      border-bottom: none;
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 12px;
     }
 
     .profit {
-      color: #83f1ad;
+      color: var(--green);
       font-weight: bold;
     }
 
-    .loss {
-      color: #ff9999;
+    .discount {
+      color: var(--gold);
       font-weight: bold;
     }
 
-    @media (max-width: 680px) {
-      table {
-        font-size: 13px;
+    .empty {
+      padding: 26px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    @media (max-width: 620px) {
+      main {
+        padding: 22px 11px 40px;
       }
 
-      .desktop {
-        display: none;
+      .panel {
+        padding: 13px;
       }
 
-      th,
-      td {
-        padding: 10px 7px;
+      .field {
+        min-width: calc(50% - 6px);
+      }
+
+      button.action {
+        width: 100%;
       }
     }
   </style>
@@ -162,189 +266,174 @@
 
 <body>
   <main>
-    <h1>Hypixel SkyBlock Craft Flips</h1>
-    <p>
-      Die Seite berechnet Craft-Flips anhand der aktuellen Hypixel-Bazaar-Preise.
-      Zutatenkosten sind Instant-Buy-Preise, der Verkaufspreis ist Instant Sell.
+    <h1>Hypixel SkyBlock Flip Scanner</h1>
+
+    <p class="subtitle">
+      Profitable Bazaar-Crafts und Auction-House-BIN-Snipes.
+      Dein Hypixel-API-Key bleibt ausschließlich im Cloudflare Worker.
     </p>
 
-    <section class="panel">
-      <div class="controls">
-        <input
-          id="apiKey"
-          type="password"
-          autocomplete="off"
-          placeholder="Deinen Hypixel API-Key einfügen"
-        >
-        <button id="loadButton" type="button">Craft Flips laden</button>
-        <button id="refreshButton" type="button" disabled>Aktualisieren</button>
-      </div>
+    <div class="tabs">
+      <button class="tab active" id="craftTab" type="button">
+        Profitable Craft-Flips
+      </button>
 
-      <div id="status">
-        API-Key eingeben und auf „Craft Flips laden“ klicken.
-      </div>
+      <button class="tab" id="snipeTab" type="button">
+        Auction-House-Snipes
+      </button>
+    </div>
 
-      <p class="small">
-        Dein Key wird nur lokal im Browser gespeichert. Teile ihn niemals mit anderen.
-        Die Daten werden danach automatisch alle 30 Sekunden aktualisiert.
+    <section class="panel" id="craftPanel">
+      <h2>Profitable Craft-Flips</h2>
+
+      <p class="muted">
+        Nur Crafts mit positivem Gewinn werden angezeigt.
+        Zutaten = Bazaar Instant Buy, Endprodukt = Bazaar Instant Sell.
       </p>
+
+      <div class="controls">
+        <div class="field">
+          <label for="minCraftProfit">Mindestprofit (Coins)</label>
+          <input
+            id="minCraftProfit"
+            type="number"
+            min="0"
+            step="1000"
+            value="0"
+          >
+        </div>
+
+        <div class="field">
+          <label for="minCraftMargin">Mindestmarge (%)</label>
+          <input
+            id="minCraftMargin"
+            type="number"
+            min="0"
+            step="1"
+            value="0"
+          >
+        </div>
+
+        <button class="action" id="loadCrafts" type="button">
+          Craft-Flips laden
+        </button>
+      </div>
+
+      <div class="stats">
+        <div class="stat">
+          <small>Profitable Crafts</small>
+          <strong id="craftCount">–</strong>
+        </div>
+
+        <div class="stat">
+          <small>Letzte Aktualisierung</small>
+          <strong id="craftTime">–</strong>
+        </div>
+      </div>
+
+      <div id="craftResults" class="table-wrap">
+        <div class="empty">Noch keine Craft-Flips geladen.</div>
+      </div>
     </section>
 
-    <div class="stats">
-      <div class="stat">
-        <span class="small">Gefundene Rezepte</span><br>
-        <strong id="count">–</strong>
+    <section class="panel hidden" id="snipePanel">
+      <h2>Auction-House-Snipes</h2>
+
+      <p class="muted">
+        Der Scanner sucht aktive BIN-Auktionen, die deutlich unter vergleichbaren Listings liegen.
+        Der geschätzte Profit enthält einen Gebührenpuffer.
+      </p>
+
+      <div class="notice">
+        Ein Snipe ist keine Garantie. Prüfe vor dem Kauf immer Item, Enchantments,
+        Stars, Pet-Level, Attribute und Preis direkt im Auction House.
       </div>
 
-      <div class="stat">
-        <span class="small">Letzte Aktualisierung</span><br>
-        <strong id="time">–</strong>
+      <div class="controls">
+        <button class="action" id="loadSnipes" type="button">
+          AH-Snipes scannen
+        </button>
       </div>
-    </div>
 
-    <div id="results">
-      <p>Noch keine Daten geladen.</p>
-    </div>
+      <div class="stats">
+        <div class="stat">
+          <small>Gefundene Snipes</small>
+          <strong id="snipeCount">–</strong>
+        </div>
+
+        <div class="stat">
+          <small>Letzter Scan</small>
+          <strong id="snipeTime">–</strong>
+        </div>
+
+        <div class="stat">
+          <small>Gescannte AH-Seiten</small>
+          <strong id="pagesScanned">–</strong>
+        </div>
+      </div>
+
+      <div id="snipeResults" class="table-wrap">
+        <div class="empty">Noch keine AH-Snipes geladen.</div>
+      </div>
+    </section>
+
+    <p id="status">Bereit. Wähle einen Tab und lade Daten.</p>
   </main>
 
   <script>
-    const recipes = [
-      {
-        name: "Enchanted Coal Block",
-        product: "ENCHANTED_COAL_BLOCK",
-        ingredients: [["ENCHANTED_COAL", 160]]
-      },
-      {
-        name: "Enchanted Iron Block",
-        product: "ENCHANTED_IRON_BLOCK",
-        ingredients: [["ENCHANTED_IRON", 160]]
-      },
-      {
-        name: "Enchanted Gold Block",
-        product: "ENCHANTED_GOLD_BLOCK",
-        ingredients: [["ENCHANTED_GOLD", 160]]
-      },
-      {
-        name: "Enchanted Diamond Block",
-        product: "ENCHANTED_DIAMOND_BLOCK",
-        ingredients: [["ENCHANTED_DIAMOND", 160]]
-      },
-      {
-        name: "Enchanted Emerald Block",
-        product: "ENCHANTED_EMERALD_BLOCK",
-        ingredients: [["ENCHANTED_EMERALD", 160]]
-      },
-      {
-        name: "Enchanted Redstone Block",
-        product: "ENCHANTED_REDSTONE_BLOCK",
-        ingredients: [["ENCHANTED_REDSTONE", 160]]
-      },
-      {
-        name: "Enchanted Lapis Block",
-        product: "ENCHANTED_LAPIS_BLOCK",
-        ingredients: [["ENCHANTED_LAPIS_LAZULI", 160]]
-      },
-      {
-        name: "Enchanted Quartz Block",
-        product: "ENCHANTED_QUARTZ_BLOCK",
-        ingredients: [["ENCHANTED_QUARTZ", 160]]
-      },
-      {
-        name: "Enchanted Glowstone",
-        product: "ENCHANTED_GLOWSTONE",
-        ingredients: [["ENCHANTED_GLOWSTONE_DUST", 160]]
-      },
-      {
-        name: "Enchanted Bone Block",
-        product: "ENCHANTED_BONE_BLOCK",
-        ingredients: [["ENCHANTED_BONE", 160]]
-      },
-      {
-        name: "Enchanted Hay Bale",
-        product: "ENCHANTED_HAY_BLOCK",
-        ingredients: [["ENCHANTED_WHEAT", 160]]
-      },
-      {
-        name: "Enchanted Melon Block",
-        product: "ENCHANTED_MELON_BLOCK",
-        ingredients: [["ENCHANTED_MELON", 160]]
-      },
-      {
-        name: "Enchanted Packed Ice",
-        product: "ENCHANTED_PACKED_ICE",
-        ingredients: [["ENCHANTED_ICE", 160]]
-      },
-      {
-        name: "Enchanted Baked Potato",
-        product: "ENCHANTED_BAKED_POTATO",
-        ingredients: [["ENCHANTED_POTATO", 64]]
-      },
-      {
-        name: "Enchanted Bread",
-        product: "ENCHANTED_BREAD",
-        ingredients: [["ENCHANTED_WHEAT", 64]]
-      },
-      {
-        name: "Enchanted Cookie",
-        product: "ENCHANTED_COOKIE",
-        ingredients: [
-          ["ENCHANTED_COCOA", 64],
-          ["ENCHANTED_SUGAR_CANE", 64]
-        ]
-      },
-      {
-        name: "Enchanted Golden Carrot",
-        product: "ENCHANTED_GOLDEN_CARROT",
-        ingredients: [
-          ["ENCHANTED_CARROT", 64],
-          ["ENCHANTED_GOLD", 8]
-        ]
-      }
-    ];
+    "use strict";
 
-    const itemNames = {
-      ENCHANTED_COAL: "Enchanted Coal",
-      ENCHANTED_IRON: "Enchanted Iron",
-      ENCHANTED_GOLD: "Enchanted Gold",
-      ENCHANTED_DIAMOND: "Enchanted Diamond",
-      ENCHANTED_EMERALD: "Enchanted Emerald",
-      ENCHANTED_REDSTONE: "Enchanted Redstone",
-      ENCHANTED_LAPIS_LAZULI: "Enchanted Lapis Lazuli",
-      ENCHANTED_QUARTZ: "Enchanted Quartz",
-      ENCHANTED_GLOWSTONE_DUST: "Enchanted Glowstone Dust",
-      ENCHANTED_BONE: "Enchanted Bone",
-      ENCHANTED_WHEAT: "Enchanted Wheat",
-      ENCHANTED_MELON: "Enchanted Melon",
-      ENCHANTED_ICE: "Enchanted Ice",
-      ENCHANTED_POTATO: "Enchanted Potato",
-      ENCHANTED_COCOA: "Enchanted Cocoa",
-      ENCHANTED_SUGAR_CANE: "Enchanted Sugar Cane",
-      ENCHANTED_CARROT: "Enchanted Carrot"
-    };
+    const WORKER_URL = "https://snipe.h5n6gr4vtp.workers.dev";
 
-    const keyInput = document.getElementById("apiKey");
-    const loadButton = document.getElementById("loadButton");
-    const refreshButton = document.getElementById("refreshButton");
-    const status = document.getElementById("status");
-    const results = document.getElementById("results");
+    const craftTab = document.getElementById("craftTab");
+    const snipeTab = document.getElementById("snipeTab");
 
-    let refreshTimer = null;
+    const craftPanel = document.getElementById("craftPanel");
+    const snipePanel = document.getElementById("snipePanel");
 
-    keyInput.value = localStorage.getItem("hypixelCraftFlipKey") || "";
+    const statusEl = document.getElementById("status");
+
+    let craftTimer = null;
+    let snipeTimer = null;
 
     function setStatus(text, type = "") {
-      status.textContent = text;
-      status.className = type;
+      statusEl.textContent = text;
+      statusEl.className = type;
     }
 
     function formatCoins(number) {
       return new Intl.NumberFormat("de-DE", {
         maximumFractionDigits: 0
-      }).format(number) + " Coins";
+      }).format(Number(number || 0)) + " Coins";
     }
 
-    function escapeHtml(text) {
-      return String(text).replace(/[&<>'"]/g, function (character) {
+    function formatTime(value) {
+      if (!value) {
+        return "–";
+      }
+
+      return new Date(value).toLocaleTimeString("de-DE");
+    }
+
+    function formatDuration(seconds) {
+      if (seconds === null || seconds === undefined) {
+        return "–";
+      }
+
+      seconds = Math.max(0, Number(seconds));
+
+      const minutes = Math.floor(seconds / 60);
+      const remainingSeconds = seconds % 60;
+
+      if (minutes > 0) {
+        return minutes + "m " + remainingSeconds + "s";
+      }
+
+      return remainingSeconds + "s";
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? "").replace(/[&<>'"]/g, function (character) {
         return {
           "&": "&amp;",
           "<": "&lt;",
@@ -355,106 +444,83 @@
       });
     }
 
-    function calculateFlips(products) {
-      const flips = [];
+    async function getJson(path) {
+      const response = await fetch(WORKER_URL + path);
 
-      for (const recipe of recipes) {
-        const product = products[recipe.product]?.quick_status;
+      const data = await response.json().catch(function () {
+        return {};
+      });
 
-        if (!product || !product.sellPrice || product.sellPrice <= 0) {
-          continue;
-        }
-
-        let totalCost = 0;
-        let validRecipe = true;
-        const ingredientsText = [];
-
-        for (const ingredient of recipe.ingredients) {
-          const itemId = ingredient[0];
-          const amount = ingredient[1];
-
-          const ingredientData = products[itemId]?.quick_status;
-
-          if (
-            !ingredientData ||
-            !ingredientData.buyPrice ||
-            ingredientData.buyPrice <= 0
-          ) {
-            validRecipe = false;
-            break;
-          }
-
-          totalCost += ingredientData.buyPrice * amount;
-          ingredientsText.push(
-            (itemNames[itemId] || itemId) + " ×" + amount
-          );
-        }
-
-        if (!validRecipe || totalCost <= 0) {
-          continue;
-        }
-
-        const revenue = product.sellPrice;
-        const profit = revenue - totalCost;
-        const margin = (profit / totalCost) * 100;
-
-        flips.push({
-          name: recipe.name,
-          ingredients: ingredientsText.join(", "),
-          cost: totalCost,
-          revenue: revenue,
-          profit: profit,
-          margin: margin
-        });
+      if (!response.ok) {
+        throw new Error(data.error || "HTTP " + response.status);
       }
 
-      return flips.sort(function (a, b) {
-        return b.profit - a.profit;
-      });
+      return data;
     }
 
-    function renderFlips(flips) {
-      document.getElementById("count").textContent = flips.length;
+    function showCrafts(flips) {
+      const box = document.getElementById("craftResults");
 
-      if (flips.length === 0) {
-        results.innerHTML =
-          "<p>Keine vollständigen Bazaar-Daten für die gespeicherten Rezepte gefunden.</p>";
+      if (!flips.length) {
+        box.innerHTML = `
+          <div class="empty">
+            Keine profitablen Crafts für deine Filter gefunden.
+          </div>
+        `;
         return;
       }
 
       const rows = flips.map(function (flip) {
-        const styleClass = flip.profit >= 0 ? "profit" : "loss";
-        const sign = flip.profit >= 0 ? "+" : "";
+        const ingredients = flip.ingredients.map(function (ingredient) {
+          return (
+            escapeHtml(ingredient.itemId) +
+            " ×" +
+            ingredient.amount
+          );
+        }).join("<br>");
 
         return `
           <tr>
             <td>
-              <strong>${escapeHtml(flip.name)}</strong><br>
-              <span class="small">${escapeHtml(flip.ingredients)}</span>
+              <strong>${escapeHtml(flip.name)}</strong>
             </td>
-            <td class="desktop">${formatCoins(flip.cost)}</td>
-            <td class="desktop">${formatCoins(flip.revenue)}</td>
-            <td class="${styleClass}">
-              ${sign}${formatCoins(flip.profit)}
+
+            <td class="muted">
+              ${ingredients}
             </td>
-            <td class="${styleClass}">
-              ${sign}${flip.margin.toFixed(1).replace(".", ",")}%
+
+            <td>
+              ${formatCoins(flip.cost)}
+            </td>
+
+            <td>
+              ${formatCoins(flip.revenue)}
+            </td>
+
+            <td class="profit">
+              +${formatCoins(flip.profit)}
+            </td>
+
+            <td class="profit">
+              +${Number(flip.margin).toFixed(1).replace(".", ",")}%
             </td>
           </tr>
         `;
       }).join("");
 
-      results.innerHTML = `
+      box.innerHTML = `
         <table>
           <thead>
             <tr>
               <th>Craft</th>
-              <th class="desktop">Zutatenkosten</th>
-              <th class="desktop">Instant Sell</th>
+              <th>Zutaten</th>
+              <th>Kosten</th>
+              <th>Instant Sell</th>
               <th>Profit</th>
               <th>Marge</th>
             </tr>
           </thead>
+
           <tbody>
             ${rows}
           </tbody>
@@ -462,83 +528,204 @@
       `;
     }
 
-    async function loadFlips() {
-      const apiKey = keyInput.value.trim();
+    function showSnipes(snipes) {
+      const box = document.getElementById("snipeResults");
 
-      if (!apiKey) {
-        setStatus("Bitte gib zuerst deinen Hypixel API-Key ein.", "error");
+      if (!snipes.length) {
+        box.innerHTML = `
+          <div class="empty">
+            Aktuell keine Snipes nach den Sicherheitsfiltern gefunden.
+            Der Worker aktualisiert seinen AH-Cache ungefähr alle zwei Minuten.
+          </div>
+        `;
         return;
       }
 
-      localStorage.setItem("hypixelCraftFlipKey", apiKey);
+      const rows = snipes.map(function (snipe) {
+        const petLevelText =
+          snipe.petLevel !== null && snipe.petLevel !== undefined
+            ? " · Lvl " + snipe.petLevel
+            : "";
 
-      loadButton.disabled = true;
-      refreshButton.disabled = true;
+        return `
+          <tr>
+            <td>
+              <strong>${escapeHtml(snipe.itemName)}</strong><br>
 
-      setStatus("Bazaar-Daten werden geladen …");
+              <span class="muted">
+                ${escapeHtml(snipe.rarity)}
+                · ${escapeHtml(snipe.reforge)}
+                · ${snipe.stars} Stars
+                ${petLevelText}
+              </span><br>
+
+              <span class="muted">
+                Auction: ${escapeHtml(snipe.auctionId)}
+              </span>
+            </td>
+
+            <td>${formatCoins(snipe.buyPrice)}</td>
+
+            <td>${formatCoins(snipe.marketPrice)}</td>
+
+            <td>${formatCoins(snipe.fees)}</td>
+
+            <td class="profit">
+              +${formatCoins(snipe.estimatedProfit)}
+            </td>
+
+            <td class="discount">
+              -${Number(snipe.discountPercent)
+                .toFixed(1)
+                .replace(".", ",")}%
+            </td>
+
+            <td>${snipe.comparableListings}</td>
+
+            <td>${formatDuration(snipe.secondsLeft)}</td>
+          </tr>
+        `;
+      }).join("");
+
+      box.innerHTML = `
+        <table>
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Kaufpreis</th>
+              <th>Vergleichspreis</th>
+              <th>Gebührenpuffer</th>
+              <th>Geschätzter Profit</th>
+              <th>Rabatt</th>
+              <th>Listings</th>
+              <th>Zeit</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            ${rows}
+          </tbody>
+        </table>
+      `;
+    }
+
+    async function loadCrafts() {
+      const button = document.getElementById("loadCrafts");
+
+      button.disabled = true;
+
+      setStatus("Profitable Craft-Flips werden geladen …");
 
       try {
-        const url =
-          "https://api.hypixel.net/v2/skyblock/bazaar?key=" +
-          encodeURIComponent(apiKey);
+        const minProfit = Math.max(
+          0,
+          Number(document.getElementById("minCraftProfit").value || 0)
+        );
 
-        const response = await fetch(url);
+        const minMargin = Math.max(
+          0,
+          Number(document.getElementById("minCraftMargin").value || 0)
+        );
 
-        if (!response.ok) {
-          throw new Error("HTTP " + response.status);
-        }
+        const data = await getJson(
+          "/api/crafts?minProfit=" +
+          encodeURIComponent(minProfit) +
+          "&minMargin=" +
+          encodeURIComponent(minMargin)
+        );
 
-        const data = await response.json();
+        showCrafts(data.flips || []);
 
-        if (!data.success || !data.products) {
-          throw new Error(
-            data.cause || "API-Antwort enthält keine Bazaar-Daten."
-          );
-        }
+        document.getElementById("craftCount").textContent =
+          data.count ?? 0;
 
-        const flips = calculateFlips(data.products);
-
-        renderFlips(flips);
-
-        document.getElementById("time").textContent =
-          new Date().toLocaleTimeString("de-DE");
+        document.getElementById("craftTime").textContent =
+          formatTime(data.updatedAt);
 
         setStatus(
-          "Bazaar-Daten erfolgreich geladen. Nächste Aktualisierung in 30 Sekunden.",
+          "Craft-Flips erfolgreich geladen. Automatische Aktualisierung alle 30 Sekunden.",
           "ok"
         );
 
-        refreshButton.disabled = false;
+        clearInterval(craftTimer);
 
-        clearInterval(refreshTimer);
-
-        refreshTimer = setInterval(loadFlips, 30000);
+        craftTimer = setInterval(loadCrafts, 30000);
 
       } catch (error) {
         setStatus(
-          "Fehler beim Abruf: " + error.message,
+          "Craft-Fehler: " + error.message,
           "error"
         );
       } finally {
-        loadButton.disabled = false;
+        button.disabled = false;
       }
     }
 
-    window.loadFlips = loadFlips;
+    async function loadSnipes() {
+      const button = document.getElementById("loadSnipes");
 
-    loadButton.onclick = function () {
-      loadFlips();
-    };
+      button.disabled = true;
 
-    refreshButton.onclick = function () {
-      loadFlips();
-    };
+      setStatus(
+        "Auction-House-Daten werden ausgewertet. Der erste Scan kann kurz dauern …"
+      );
 
-    keyInput.onkeydown = function (event) {
-      if (event.key === "Enter") {
-        loadFlips();
+      try {
+        const data = await getJson("/api/snipes");
+
+        showSnipes(data.snipes || []);
+
+        document.getElementById("snipeCount").textContent =
+          data.count ?? 0;
+
+        document.getElementById("snipeTime").textContent =
+          formatTime(data.updatedAt);
+
+        document.getElementById("pagesScanned").textContent =
+          (data.scannedPages ?? "–") +
+          " / " +
+          (data.totalPages ?? "–");
+
+        setStatus(
+          (data.cached ? "Zwischengespeicherte " : "Neue ") +
+          "AH-Snipes geladen. Der Worker aktualisiert den Cache ungefähr alle zwei Minuten.",
+          "ok"
+        );
+
+        clearInterval(snipeTimer);
+
+        snipeTimer = setInterval(loadSnipes, 120000);
+
+      } catch (error) {
+        setStatus(
+          "AH-Snipe-Fehler: " + error.message,
+          "error"
+        );
+      } finally {
+        button.disabled = false;
       }
+    }
+
+    function switchTab(tabName) {
+      const craftsActive = tabName === "craft";
+
+      craftTab.classList.toggle("active", craftsActive);
+      snipeTab.classList.toggle("active", !craftsActive);
+
+      craftPanel.classList.toggle("hidden", !craftsActive);
+      snipePanel.classList.toggle("hidden", craftsActive);
+    }
+
+    craftTab.onclick = function () {
+      switchTab("craft");
     };
+
+    snipeTab.onclick = function () {
+      switchTab("snipe");
+    };
+
+    document.getElementById("loadCrafts").onclick = loadCrafts;
+    document.getElementById("loadSnipes").onclick = loadSnipes;
   </script>
 </body>
 </html>
