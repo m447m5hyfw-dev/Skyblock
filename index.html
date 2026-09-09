@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hypixel SkyBlock Craft Flips</title>
+<style>
+   * {
+     box-sizing: border-box;
+   }
+   body {
+     margin: 0;
+     background: #0e1624;
+     color: #eef6ff;
+     font-family: Arial, sans-serif;
+   }
+   main {
+     max-width: 1150px;
+     margin: auto;
+     padding: 28px 16px 48px;
+   }
+   h1 {
+     margin: 0 0 7px;
+     color: #60dcff;
+   }
+   p {
+     color: #b7c4d6;
+     line-height: 1.5;
+   }
+   .panel,
+   .stat {
+     background: #17253a;
+     border: 1px solid #2b405c;
+     border-radius: 12px;
+     padding: 18px;
+   }
+   .panel {
+     margin: 20px 0;
+   }
+   .controls {
+     display: flex;
+     gap: 10px;
+     flex-wrap: wrap;
+   }
+   input {
+     flex: 1;
+     min-width: 280px;
+     background: #0a111c;
+     border: 1px solid #39516e;
+     border-radius: 8px;
+     padding: 12px;
+     color: #fff;
+     font-size: 16px;
+   }
+   button {
+     background: #61dcff;
+     border: 0;
+     border-radius: 8px;
+     padding: 12px 18px;
+     font-size: 16px;
+     font-weight: 700;
+     color: #06111d;
+     cursor: pointer;
+   }
+   button:disabled {
+     opacity: 0.7;
+     cursor: wait;
+   }
+   #status {
+     margin: 14px 0 0;
+     min-height: 22px;
+   }
+   .error {
+     color: #ff9292;
+   }
+   .ok {
+     color: #85eea9;
+   }
+   .stats {
+     display: flex;
+     gap: 14px;
+     flex-wrap: wrap;
+     margin: 20px 0;
+   }
+   .stat {
+     min-width: 185px;
+   }
+   .small {
+     color: #aebed1;
+     font-size: 13px;
+   }
+   table {
+     width: 100%;
+     border-collapse: collapse;
+     background: #17253a;
+     border-radius: 12px;
+     overflow: hidden;
+   }
+   th,
+   td {
+     padding: 13px 12px;
+     text-align: left;
+     border-bottom: 1px solid #2b405c;
+   }
+   th {
+     font-size: 12px;
+     letter-spacing: 0.4px;
+     text-transform: uppercase;
+     color: #8bdfff;
+   }
+   tr:last-child td {
+     border: none;
+   }
+   .profit {
+     color: #83f1ad;
+     font-weight: bold;
+   }
+   .loss {
+     color: #ff9999;
+     font-weight: bold;
+   }
+   @media (max-width: 680px) {
+     table {
+       font-size: 13px;
+     }
+     .desktop {
+       display: none;
+     }
+     th,
+     td {
+       padding: 10px 7px;
+     }
+   }
+</style>
+</head>
+<body>
+<main>
+<h1>Hypixel SkyBlock Craft Flips</h1>
+<p>
+     Die Seite berechnet Craft-Flips anhand der aktuellen Hypixel-Bazaar-Preise.
+     Zutatenkosten sind Instant-Buy-Preise, der Verkaufspreis ist Instant Sell.
+</p>
+<section class="panel">
+<div class="controls">
+<input
+         id="apiKey"
+         type="password"
+         autocomplete="off"
+         placeholder="Deinen Hypixel API-Key einfügen"
+>
+<button id="loadButton" type="button">Craft
